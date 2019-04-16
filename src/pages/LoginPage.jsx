@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import * as api from "../api";
 
 const Page = styled.div`
   margin-top: 100px;
@@ -64,11 +65,18 @@ const Page = styled.div`
 `;
 
 class LoginPage extends React.Component {
-  state = {
-    loading: false,
-    username: "",
-    password: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      loading: false,
+      username: "",
+      password: ""
+    };
+
+    this.usernameRef = React.createRef();
+    this.passwordRef = React.createRef();
+  }
 
   handleInputChange = e => {
     this.setState({
@@ -77,32 +85,31 @@ class LoginPage extends React.Component {
   };
 
   handleSubmit = e => {
-    console.log(this.state.username);
     e.preventDefault();
+    this.setState({ loading: true, error: null });
+    api
+      .login(this.usernameRef.current.value, this.passwordRef.current.value)
+      .then(user => {
+        this.setState({ loading: false });
+        this.props.onLogin(user);
+      })
+      .catch(error => this.setState({ error, loading: false }));
   };
 
   render() {
-    const { username, password, loading } = this.state;
+    const { username, password, error, loading } = this.state;
     return (
       <Page>
         <form onSubmit={this.handleSubmit}>
           <label>
             Username
-            <input
-              name="username"
-              value={username}
-              onChange={this.handleInputChange}
-            />
+            <input name="username" ref={this.usernameRef} />
           </label>
           <label>
             Password
-            <input
-              name="password"
-              type="password"
-              value={password}
-              onChange={this.handleInputChange}
-            />
+            <input name="password" type="password" ref={this.passwordRef} />
           </label>
+          {error && <div className="error">{error.message}</div>}
           <button type="submit" disabled={loading}>
             Sign In
           </button>
