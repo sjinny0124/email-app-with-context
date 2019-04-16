@@ -1,0 +1,8 @@
+{
+  "auth": {
+    "firstName": "Byungdae",
+    "lastName": "Sohn",
+    "username": "guest",
+    "avatar": "https://graph.facebook.com/${facebookId}/picture?type=normal"
+  }
+}

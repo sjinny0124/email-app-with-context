@@ -1,6 +1,8 @@
 import React from "react";
+import { Icon, Button } from "antd";
 import styled from "styled-components";
 import * as api from "../api";
+import PropTypes from "prop-types";
 
 const Page = styled.div`
   margin-top: 100px;
@@ -29,28 +31,7 @@ const Page = styled.div`
     }
 
     button {
-      background: #3257ff;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 3px;
-      box-shadow: 0 1px 2px #3257ff;
-      transition: box-shadow, background-color 0.12s;
-      outline: none;
-      font-size: 18px;
-      &:hover {
-        background-color: #1431b9;
-        cursor: pointer;
-      }
-      &:focus {
-        box-shadow: 0 1px 8px #3257ff;
-      }
-      &:active {
-        transform: scale(0.98);
-      }
-    }
-    button[disabled] {
-      opacity: 0.4;
+      height: 50px;
     }
   }
 
@@ -70,12 +51,13 @@ class LoginPage extends React.Component {
     this.state = {
       error: null,
       loading: false,
+      iconLoading: false,
       username: "",
       password: ""
     };
 
-    this.usernameRef = React.createRef();
-    this.passwordRef = React.createRef();
+    //this.usernameRef = React.createRef();
+    //this.passwordRef = React.createRef();
   }
 
   handleInputChange = e => {
@@ -88,34 +70,53 @@ class LoginPage extends React.Component {
     e.preventDefault();
     this.setState({ loading: true, error: null });
     api
-      .login(this.usernameRef.current.value, this.passwordRef.current.value)
+      .login(this.state.username, this.state.password)
       .then(user => {
         this.setState({ loading: false });
         this.props.onLogin(user);
       })
       .catch(error => this.setState({ error, loading: false }));
   };
-
   render() {
     const { username, password, error, loading } = this.state;
     return (
       <Page>
+        <Icon type="loading" />
         <form onSubmit={this.handleSubmit}>
           <label>
             Username
-            <input name="username" ref={this.usernameRef} />
+            <input
+              name="username"
+              value={username}
+              onChange={this.handleInputChange}
+            />
           </label>
           <label>
             Password
-            <input name="password" type="password" ref={this.passwordRef} />
+            <input
+              name="password"
+              type="password"
+              value={password}
+              onChange={this.handleInputChange}
+            />
           </label>
           {error && <div className="error">{error.message}</div>}
-          <button type="submit" disabled={loading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            disabled={loading}
+          >
             Sign In
-          </button>
+          </Button>
         </form>
       </Page>
     );
   }
 }
+
+LoginPage.propTypes = {
+  onLogin: PropTypes.func.isRequired
+};
+
 export default LoginPage;
