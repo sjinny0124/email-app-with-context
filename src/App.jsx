@@ -1,19 +1,13 @@
 import React, { Component } from "react";
-import { FAKE_USER } from './api';
+import { FAKE_USER } from "./api";
 import LoginPage from "./pages/LoginPage";
+import MainPage from "./pages/MainPage";
+import UserContext from "./contexts/UserContext";
 import "./App.css";
-
-const Home = () => {
-  return (
-    <div>
-      <h2>로그인 페이지</h2>
-    </div>
-  );
-};
 
 class App extends Component {
   state = {
-    currentUser: null
+    currentUser: FAKE_USER
   };
 
   handleLogin = user => {
@@ -25,8 +19,13 @@ class App extends Component {
   };
 
   render() {
+    const { currentUser } = this.state;
     return this.state.currentUser ? (
-      <Home />
+      <UserContext.Provider
+        value={{ user: currentUser, onLogout: this.handleLogout }}
+      >
+        <MainPage user={currentUser} onLogout={this.handleLogout} />
+      </UserContext.Provider>
     ) : (
       <LoginPage onLogin={this.handleLogin} />
     );
