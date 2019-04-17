@@ -2,7 +2,7 @@ import React from "react";
 import { Icon, Button } from "antd";
 import styled from "styled-components";
 import * as api from "../api";
-import UserContext from "../contexts/UserContext";
+import { UserConsumer } from "../contexts/UserContext";
 
 const Page = styled.div`
   margin-top: 100px;
@@ -80,7 +80,7 @@ class LoginPage extends React.Component {
   render() {
     const { username, password, error, loading } = this.state;
     return (
-      <UserContext.Consumer>
+      <UserConsumer>
         {value => {
           const { onLogin } = value;
           return (
@@ -117,7 +117,7 @@ class LoginPage extends React.Component {
             </Page>
           );
         }}
-      </UserContext.Consumer>
+      </UserConsumer>
     );
   }
 }

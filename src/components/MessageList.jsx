@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import UserContext from "../contexts/UserContext";
+import { UserConsumer } from "../contexts/UserContext";
 
 const List = styled.div`
   grid-area: MessageList;
@@ -15,7 +15,7 @@ const List = styled.div`
 
 const MessageList = () => {
   return (
-    <UserContext.Consumer>
+    <UserConsumer>
       {({ user }) => {
         return (
           <List className="MessageList">
@@ -25,7 +25,7 @@ const MessageList = () => {
           </List>
         );
       }}
-    </UserContext.Consumer>
+    </UserConsumer>
   );
 };
 

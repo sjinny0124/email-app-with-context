@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import UserContext from "../contexts/UserContext";
+import { UserConsumer } from "../contexts/UserContext";
 
 const Menu = styled.div`
   display: flex;
@@ -76,7 +76,7 @@ class UserMenu extends React.Component {
 
   render() {
     return (
-      <UserContext.Consumer>
+      <UserConsumer>
         {value => {
           console.log(value);
           const { user, onLogout } = value;
@@ -96,7 +96,7 @@ class UserMenu extends React.Component {
             </Menu>
           );
         }}
-      </UserContext.Consumer>
+      </UserConsumer>
     );
   }
 }
