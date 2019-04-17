@@ -49,7 +49,7 @@ const List = styled.div`
 const MessageList = () => (
   <List className="MessageList">
     <EmailConsumer>
-      {({ emails, loading }) => {
+      {({ emails, loading, onSelectEmail }) => {
         if (loading) {
           return <div>이메일을 읽어오는 중입니다...</div>;
         }
@@ -69,7 +69,11 @@ const MessageList = () => (
           <div className="MessageList">
             <ul>
               {emails.map(email => (
-                <Email key={email.id} {...email} />
+                <Email
+                  key={email.id}
+                  {...email}
+                  onSelectEmail={onSelectEmail}
+                />
               ))}
             </ul>
           </div>

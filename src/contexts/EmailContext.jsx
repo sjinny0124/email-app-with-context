@@ -10,7 +10,8 @@ const { Provider, Consumer } = React.createContext();
 class EmailProvider extends React.Component {
   state = {
     loading: false,
-    mails: []
+    mails: [],
+    currentEmail: null
   };
 
   componentDidMount() {
@@ -27,10 +28,21 @@ class EmailProvider extends React.Component {
     });
   }
 
+  handleSelectEmail = email => {
+    console.log("현재 선택한 이메일:", email);
+    this.setState({
+      currentEmail: email
+    });
+  };
+
   render() {
     return (
       <Provider
-        value={{ emails: [...this.state.mails], loading: this.state.loading }}
+        value={{
+          emails: [...this.state.mails],
+          loading: this.state.loading,
+          onSelectEmail: this.handleSelectEmail
+        }}
       >
         {this.props.children}
       </Provider>
