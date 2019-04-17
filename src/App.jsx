@@ -20,14 +20,16 @@ class App extends Component {
 
   render() {
     const { currentUser } = this.state;
-    return this.state.currentUser ? (
+    return (
       <UserContext.Provider
-        value={{ user: currentUser, onLogout: this.handleLogout }}
+        value={{
+          user: currentUser,
+          onLogout: this.handleLogout,
+          onLogin: this.handleLogin
+        }}
       >
-        <MainPage user={currentUser} onLogout={this.handleLogout} />
+        {currentUser ? <MainPage /> : <LoginPage />}
       </UserContext.Provider>
-    ) : (
-      <LoginPage onLogin={this.handleLogin} />
     );
   }
 }

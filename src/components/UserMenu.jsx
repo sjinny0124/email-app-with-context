@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 
@@ -17,7 +17,6 @@ const Menu = styled.div`
     background-color: #fff;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    display: none;
   }
   li {
     cursor: pointer;
@@ -38,19 +37,33 @@ class UserMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false
+      showMenu: false
     };
     this.menuULRef = React.createRef();
   }
 
+  handleToggleMenu = e => {
+    this.setState({
+      showMenu: !this.state.showMenu
+    });
+
+    e.stopPropagation();
+    //e.preventDefault();
+  };
+
   handleClick = e => {
-    if (e.target !== this.menuULRef.current) {
-      //닫기
+    if (
+      e.target !== this.menuULRef.current &&
+      e.target.className !== "UserAvatar"
+    ) {
       this.setState({
-        show: true
+        showMenu: false
       });
-      console.log(this.menuULRef.current);
     }
+  };
+
+  handleTestBubble = e => {
+    console.log("===버블");
   };
 
   componentDidMount() {
@@ -68,16 +81,18 @@ class UserMenu extends React.Component {
           console.log(value);
           const { user, onLogout } = value;
           return (
-            <Menu className="UserMenu">
+            <Menu className="UserMenu" onClick={this.handleTestBubble}>
               <img
                 className="UserAvatar"
                 alt="User avatar"
                 src={user.avatar}
-                onClick={this.handleClick}
+                onClick={this.handleToggleMenu}
               />
-              <ul ref={this.menuULRef}>
-                <li onClick={onLogout}>Logout</li>
-              </ul>
+              {this.state.showMenu && (
+                <ul ref={this.menuULRef}>
+                  <li onClick={onLogout}>Logout</li>
+                </ul>
+              )}
             </Menu>
           );
         }}
