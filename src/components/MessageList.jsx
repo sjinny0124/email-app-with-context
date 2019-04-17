@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { UserConsumer } from "../contexts/UserContext";
 import { EmailConsumer } from "../contexts/EmailContext";
+import Email from "./Email";
+
 const List = styled.div`
   grid-area: MessageList;
   padding: 10px;
@@ -47,33 +49,33 @@ const List = styled.div`
 const MessageList = () => (
   <List className="MessageList">
     <EmailConsumer>
-      {emails => {
+      {({ emails, loading }) => {
+        if (loading) {
+          return <div>이메일을 읽어오는 중입니다...</div>;
+        }
+
+        if (emails.length === 0) {
+          return (
+            <UserConsumer>
+              {({ user }) => (
+                <div className="no-messages">
+                  Your mailbox is empty, {user.firstName}!
+                </div>
+              )}
+            </UserConsumer>
+          );
+        }
         return (
           <div className="MessageList">
             <ul>
               {emails.map(email => (
-                <li key={email.id}>
-                  <div className="sender">{email.sender}</div>
-                  <div className="subject">{email.subject}</div>
-                  <div className="preview">{email.preview}</div>
-                </li>
+                <Email key={email.id} {...email} />
               ))}
             </ul>
           </div>
         );
       }}
     </EmailConsumer>
-    <UserConsumer>
-      {({ user }) => {
-        return (
-          <List className="MessageList">
-            <div className="no-messages">
-              Your mailbox is empty, {user.firstName}!
-            </div>
-          </List>
-        );
-      }}
-    </UserConsumer>
   </List>
 );
 
