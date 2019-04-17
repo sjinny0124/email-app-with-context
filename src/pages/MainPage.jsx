@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import MessageList from "../components/MessageList";
 import styled from "styled-components";
+import { EmailProvider } from "../contexts/EmailContext";
 
 const Page = styled.main`
   display: grid;
@@ -15,7 +16,9 @@ const Page = styled.main`
 const MainPage = ({ user, onLogout }) => (
   <Page className="MainPage">
     <Header />
-    <MessageList />
+    <EmailProvider>
+      <MessageList />;
+    </EmailProvider>
   </Page>
 );
 
