@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 import { EmailContext } from "../contexts/EmailContext";
-import Email from "./Email";
+//import Email from "./Email";
 
 const List = styled.div`
   grid-area: MessageList;
@@ -46,7 +46,18 @@ const List = styled.div`
   }
 `;
 
-const MessageList = () => {
+const Email = React.memo(function({ email, onSelectEmail }) {
+  console.log("========이메일", email);
+  return (
+    <li onClick={() => onSelectEmail(email)}>
+      <div className="sender">{email.sender}</div>
+      <div className="subject">{email.subject}</div>
+      <div className="preview">{email.preview}</div>
+    </li>
+  );
+});
+
+function MessageList() {
   const { emails, loading, onSelectEmail } = useContext(EmailContext);
   const { user } = useContext(UserContext);
   return (
@@ -61,13 +72,13 @@ const MessageList = () => {
         <div className="MessageList">
           <ul>
             {emails.map(email => (
-              <Email key={email.id} {...email} onSelectEmail={onSelectEmail} />
+              <Email key={email.id} email={email} onSelectEmail={onSelectEmail} />
             ))}
           </ul>
         </div>
       )}
     </List>
   );
-};
+}
 
 export default MessageList;
