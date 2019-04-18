@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import UserMenu from "./UserMenu";
-import { EmailConsumer } from "../contexts/EmailContext";
+import { EmailContext } from "../contexts/EmailContext";
 
 const GridHeader = styled.header`
   grid-area: Header;
@@ -19,15 +19,14 @@ const GridHeader = styled.header`
   }
 `;
 
-const Header = ({ onLogout }) => (
-  <GridHeader className="Header">
-    <EmailConsumer>
-      {({ emails }) => {
-        return <h2>MailBox({emails.length})</h2>;
-      }}
-    </EmailConsumer>
-    <UserMenu />
-  </GridHeader>
-);
+const Header = ({ onLogout }) => {
+  const { emails } = useContext(EmailContext);
+  return (
+    <GridHeader className="Header">
+      <h2>MailBox({emails.length})</h2>;
+      <UserMenu onLogout={onLogout} />
+    </GridHeader>
+  );
+};
 
 export default Header;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { UserConsumer } from "../contexts/UserContext";
+import { UserContext } from "../contexts/UserContext";
 
 const Menu = styled.div`
   display: flex;
@@ -34,6 +34,7 @@ const Menu = styled.div`
 `;
 
 class UserMenu extends React.Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -75,28 +76,21 @@ class UserMenu extends React.Component {
   }
 
   render() {
+    const { user, onLogout } = this.context;
     return (
-      <UserConsumer>
-        {value => {
-          console.log(value);
-          const { user, onLogout } = value;
-          return (
-            <Menu className="UserMenu" onClick={this.handleTestBubble}>
-              <img
-                className="UserAvatar"
-                alt="User avatar"
-                src={user.avatar}
-                onClick={this.handleToggleMenu}
-              />
-              {this.state.showMenu && (
-                <ul ref={this.menuULRef}>
-                  <li onClick={onLogout}>Logout</li>
-                </ul>
-              )}
-            </Menu>
-          );
-        }}
-      </UserConsumer>
+      <Menu className="UserMenu" onClick={this.handleTestBubble}>
+        <img
+          className="UserAvatar"
+          alt="User avatar"
+          src={user.avatar}
+          onClick={this.handleToggleMenu}
+        />
+        {this.state.showMenu && (
+          <ul ref={this.menuULRef}>
+            <li onClick={onLogout}>Logout</li>
+          </ul>
+        )}
+      </Menu>
     );
   }
 }

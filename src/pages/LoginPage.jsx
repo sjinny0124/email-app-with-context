@@ -2,7 +2,7 @@ import React from "react";
 import { Icon, Button } from "antd";
 import styled from "styled-components";
 import * as api from "../api";
-import { UserConsumer } from "../contexts/UserContext";
+import { UserContext } from "../contexts/UserContext";
 
 const Page = styled.div`
   margin-top: 100px;
@@ -46,6 +46,7 @@ const Page = styled.div`
 `;
 
 class LoginPage extends React.Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -77,47 +78,43 @@ class LoginPage extends React.Component {
       })
       .catch(error => this.setState({ error, loading: false }));
   };
+
   render() {
     const { username, password, error, loading } = this.state;
+    const { onLogin } = this.context;
+
     return (
-      <UserConsumer>
-        {value => {
-          const { onLogin } = value;
-          return (
-            <Page>
-              <Icon type="loading" />
-              <form onSubmit={e => this.handleSubmit(e, onLogin)}>
-                <label>
-                  Username
-                  <input
-                    name="username"
-                    value={username}
-                    onChange={this.handleInputChange}
-                  />
-                </label>
-                <label>
-                  Password
-                  <input
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={this.handleInputChange}
-                  />
-                </label>
-                {error && <div className="error">{error.message}</div>}
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                  disabled={loading}
-                >
-                  Sign In
-                </Button>
-              </form>
-            </Page>
-          );
-        }}
-      </UserConsumer>
+      <Page>
+        <Icon type="loading" />
+        <form onSubmit={e => this.handleSubmit(e, onLogin)}>
+          <label>
+            Username
+            <input
+              name="username"
+              value={username}
+              onChange={this.handleInputChange}
+            />
+          </label>
+          <label>
+            Password
+            <input
+              name="password"
+              type="password"
+              value={password}
+              onChange={this.handleInputChange}
+            />
+          </label>
+          {error && <div className="error">{error.message}</div>}
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            disabled={loading}
+          >
+            Sign In
+          </Button>
+        </form>
+      </Page>
     );
   }
 }

@@ -2,8 +2,8 @@ import React from "react";
 import * as api from "../api";
 import { withNotifiy } from "./NotificationContext";
 import { notification } from "antd";
-
-const { Provider, Consumer } = React.createContext();
+let EmailContext;
+const { Provider, Consumer } = (EmailContext = React.createContext());
 
 /**
  * 1. 메일을 가져오기
@@ -82,4 +82,8 @@ class EmailProvider extends React.Component {
   }
 }
 const WrappingComponent = withNotifiy(EmailProvider);
-export { WrappingComponent as EmailProvider, Consumer as EmailConsumer };
+export {
+  WrappingComponent as EmailProvider,
+  Consumer as EmailConsumer,
+  EmailContext
+};
