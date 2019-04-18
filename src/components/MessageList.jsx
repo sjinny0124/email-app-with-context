@@ -49,7 +49,8 @@ const List = styled.div`
 const MessageList = () => (
   <List className="MessageList">
     <EmailConsumer>
-      {({ emails, loading, onSelectEmail }) => {
+      {({ emails, loading, onSelectEmail, currentEmail }) => {
+        console.log("선택된 이메일...", currentEmail);
         if (loading) {
           return <div>이메일을 읽어오는 중입니다...</div>;
         }

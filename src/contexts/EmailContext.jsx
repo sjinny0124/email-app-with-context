@@ -1,5 +1,8 @@
 import React from "react";
 import * as api from "../api";
+import { withNotifiy } from "./NotificationContext";
+import { notification } from "antd";
+
 const { Provider, Consumer } = React.createContext();
 
 /**
@@ -8,24 +11,52 @@ const { Provider, Consumer } = React.createContext();
  **/
 
 class EmailProvider extends React.Component {
-  state = {
-    loading: false,
-    mails: [],
-    currentEmail: null
-  };
+  constructor(props) {
+    super(props);
+
+    console.log("EmailProvider props...", props);
+    this.state = {
+      loading: false,
+      emails: [],
+      currentEmail: null,
+      error: null
+    };
+
+    this.timer = null;
+  }
+
+  componentWillUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
 
   componentDidMount() {
     this.setState({
-      loading: true
+      loading: true,
+      error: null
     });
     //메일을 가져온다.
-    api.fetchEmails().then(data => {
-      console.log("메일 요청 결과...", this, data);
+    api.fetchEmails().then(emails => {
+      console.log("메일 요청 결과...", this, emails);
       this.setState({
-        mails: data,
+        emails,
         loading: false
       });
     });
+
+    this.timer = setInterval(() => {
+      api.fetchLatestEmails().then(emails => {
+        this.setState({
+          emails: [...emails, ...this.state.emails]
+        });
+        notification.open({
+          message: `${emails.length} more emails arrived`
+        });
+        //this.props.notify(`${emails.length} more emails arrived`);
+      });
+    }, 500);
   }
 
   handleSelectEmail = email => {
@@ -39,7 +70,8 @@ class EmailProvider extends React.Component {
     return (
       <Provider
         value={{
-          emails: [...this.state.mails],
+          currentEmail: this.state.currentEmail,
+          emails: [...this.state.emails],
           loading: this.state.loading,
           onSelectEmail: this.handleSelectEmail
         }}
@@ -49,5 +81,5 @@ class EmailProvider extends React.Component {
     );
   }
 }
-
-export { EmailProvider, Consumer as EmailConsumer };
+const WrappingComponent = withNotifiy(EmailProvider);
+export { WrappingComponent as EmailProvider, Consumer as EmailConsumer };

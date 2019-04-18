@@ -2,7 +2,8 @@ import React from "react";
 import Header from "../components/Header";
 import MessageList from "../components/MessageList";
 import styled from "styled-components";
-import { EmailProvider } from "../contexts/EmailContext";
+import { EmailProvider, EmailConsumer } from "../contexts/EmailContext";
+import MessageViewer from "../components/MessageViewer";
 
 const Page = styled.main`
   display: grid;
@@ -14,12 +15,16 @@ const Page = styled.main`
     "MessageList MessageList";
 `;
 const MainPage = ({ user, onLogout }) => (
-  <Page className="MainPage">
-    <Header />
-    <EmailProvider>
-      <MessageList />;
-    </EmailProvider>
-  </Page>
+  <EmailProvider>
+    <EmailConsumer>
+      {({ currentEmail }) => (
+        <Page className="MainPage">
+          <Header />
+          {currentEmail ? <MessageViewer /> : <MessageList />}
+        </Page>
+      )}
+    </EmailConsumer>
+  </EmailProvider>
 );
 
 export default MainPage;

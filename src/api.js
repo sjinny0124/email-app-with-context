@@ -69,3 +69,16 @@ export function fetchEmails() {
     }, 3000);
   });
 }
+
+export function fetchLatestEmails() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(
+        FAKE_EMAILS.map(mail => ({
+          ...mail,
+          id: Math.random() // ID를 랜덤하게 만든다.
+        })).slice(0, Math.floor(Math.random() * (FAKE_EMAILS.length + 1)))
+      );
+    }, 300);
+  });
+}
