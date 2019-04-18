@@ -33,8 +33,9 @@ const Menu = styled.div`
   }
 `;
 
-class UserMenu extends React.Component {
+class UserMenu extends React.PureComponent {
   static contextType = UserContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -60,10 +61,6 @@ class UserMenu extends React.Component {
     }
   };
 
-  handleTestBubble = e => {
-    console.log("===버블");
-  };
-
   componentDidMount() {
     document.addEventListener("click", this.handleClick);
   }
@@ -75,7 +72,7 @@ class UserMenu extends React.Component {
   render() {
     const { user, onLogout } = this.context;
     return (
-      <Menu className="UserMenu" onClick={this.handleTestBubble}>
+      <Menu className="UserMenu">
         <img
           className="UserAvatar"
           alt="User avatar"

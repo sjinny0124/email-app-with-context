@@ -8,7 +8,7 @@ const NotiBox = styled.div`
 
   > ul {
     position: absolute;
-    top: 10px;
+    top: 100px;
     right: 6px;
     z-index: 1;
     margin: 0;
@@ -52,9 +52,13 @@ const NotiBox = styled.div`
 `;
 
 class NotificationProvider extends React.Component {
-  state = {
-    messages: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: [],
+      onAddMessage: this.handleAddMessage
+    };
+  }
 
   componentDidMount() {
     this.timer = setInterval(this.cleanup, 1000);
@@ -95,12 +99,7 @@ class NotificationProvider extends React.Component {
 
   render() {
     return (
-      <Provider
-        value={{
-          onAddMessage: this.handleAddMessage,
-          ...this.state
-        }}
-      >
+      <Provider value={this.state}>
         <NotiBox className="notification-wrapper">
           <ul>
             {this.state.messages.map(message => {

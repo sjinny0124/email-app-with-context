@@ -82,7 +82,7 @@ class LoginPage extends React.Component {
   render() {
     const { username, password, error, loading } = this.state;
     const { onLogin } = this.context;
-
+    console.log("--------LoginPage");
     return (
       <Page>
         <Icon type="loading" />

@@ -19,7 +19,8 @@ class EmailProvider extends React.Component {
       loading: false,
       emails: [],
       currentEmail: null,
-      error: null
+      error: null,
+      onSelectEmail: this.handleSelectEmail
     };
 
     this.timer = null;
@@ -67,18 +68,7 @@ class EmailProvider extends React.Component {
   };
 
   render() {
-    return (
-      <Provider
-        value={{
-          currentEmail: this.state.currentEmail,
-          emails: [...this.state.emails],
-          loading: this.state.loading,
-          onSelectEmail: this.handleSelectEmail
-        }}
-      >
-        {this.props.children}
-      </Provider>
-    );
+    return <Provider value={this.state}>{this.props.children}</Provider>;
   }
 }
 const WrappingComponent = withNotifiy(EmailProvider);

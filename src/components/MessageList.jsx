@@ -72,7 +72,11 @@ function MessageList() {
         <div className="MessageList">
           <ul>
             {emails.map(email => (
-              <Email key={email.id} email={email} onSelectEmail={onSelectEmail} />
+              <Email
+                key={email.id}
+                email={email}
+                onSelectEmail={onSelectEmail}
+              />
             ))}
           </ul>
         </div>
