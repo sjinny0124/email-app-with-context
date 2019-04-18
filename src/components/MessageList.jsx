@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { UserConsumer } from "../contexts/UserContext";
-import { EmailConsumer } from "../contexts/EmailContext";
+import { UserContext } from "../contexts/UserContext";
+import { EmailContext } from "../contexts/EmailContext";
 import Email from "./Email";
 
 const List = styled.div`
@@ -46,42 +46,28 @@ const List = styled.div`
   }
 `;
 
-const MessageList = () => (
-  <List className="MessageList">
-    <EmailConsumer>
-      {({ emails, loading, onSelectEmail, currentEmail }) => {
-        console.log("선택된 이메일...", currentEmail);
-        if (loading) {
-          return <div>이메일을 읽어오는 중입니다...</div>;
-        }
-
-        if (emails.length === 0) {
-          return (
-            <UserConsumer>
-              {({ user }) => (
-                <div className="no-messages">
-                  Your mailbox is empty, {user.firstName}!
-                </div>
-              )}
-            </UserConsumer>
-          );
-        }
-        return (
-          <div className="MessageList">
-            <ul>
-              {emails.map(email => (
-                <Email
-                  key={email.id}
-                  {...email}
-                  onSelectEmail={onSelectEmail}
-                />
-              ))}
-            </ul>
-          </div>
-        );
-      }}
-    </EmailConsumer>
-  </List>
-);
+const MessageList = () => {
+  const { emails, loading, onSelectEmail } = useContext(EmailContext);
+  const { user } = useContext(UserContext);
+  return (
+    <List className="MessageList">
+      {loading ? (
+        <div className="no-messages">Loading...</div>
+      ) : emails.length === 0 ? (
+        <div className="no-messages">
+          Your mailbox is empty, {user.firstName}!
+        </div>
+      ) : (
+        <div className="MessageList">
+          <ul>
+            {emails.map(email => (
+              <Email key={email.id} {...email} onSelectEmail={onSelectEmail} />
+            ))}
+          </ul>
+        </div>
+      )}
+    </List>
+  );
+};
 
 export default MessageList;

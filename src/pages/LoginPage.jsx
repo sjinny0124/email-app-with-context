@@ -47,6 +47,7 @@ const Page = styled.div`
 
 class LoginPage extends React.Component {
   static contextType = UserContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -78,7 +79,6 @@ class LoginPage extends React.Component {
       })
       .catch(error => this.setState({ error, loading: false }));
   };
-
   render() {
     const { username, password, error, loading } = this.state;
     const { onLogin } = this.context;

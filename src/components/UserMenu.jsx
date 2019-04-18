@@ -53,10 +53,7 @@ class UserMenu extends React.Component {
   };
 
   handleClick = e => {
-    if (
-      e.target !== this.menuULRef.current &&
-      e.target.className !== "UserAvatar"
-    ) {
+    if (e.target !== this.menuULRef.current) {
       this.setState({
         showMenu: false
       });
@@ -84,9 +81,10 @@ class UserMenu extends React.Component {
           alt="User avatar"
           src={user.avatar}
           onClick={this.handleToggleMenu}
+          ref={this.menuULRef}
         />
         {this.state.showMenu && (
-          <ul ref={this.menuULRef}>
+          <ul>
             <li onClick={onLogout}>Logout</li>
           </ul>
         )}

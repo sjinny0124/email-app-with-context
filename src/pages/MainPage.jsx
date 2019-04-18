@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../components/Header";
 import MessageList from "../components/MessageList";
 import styled from "styled-components";
-import { EmailProvider, EmailConsumer } from "../contexts/EmailContext";
+import { EmailContext } from "../contexts/EmailContext";
 import MessageViewer from "../components/MessageViewer";
 
 const Page = styled.main`
@@ -14,17 +14,15 @@ const Page = styled.main`
     "Header Header"
     "MessageList MessageList";
 `;
-const MainPage = ({ user, onLogout }) => (
-  <EmailProvider>
-    <EmailConsumer>
-      {({ currentEmail }) => (
-        <Page className="MainPage">
-          <Header />
-          {currentEmail ? <MessageViewer /> : <MessageList />}
-        </Page>
-      )}
-    </EmailConsumer>
-  </EmailProvider>
-);
+const MainPage = () => {
+  const { currentEmail } = useContext(EmailContext);
+
+  return (
+    <Page className="MainPage">
+      <Header />
+      {currentEmail ? <MessageViewer /> : <MessageList />}
+    </Page>
+  );
+};
 
 export default MainPage;

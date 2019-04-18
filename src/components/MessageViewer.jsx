@@ -1,5 +1,5 @@
-import React from "react";
-import { EmailConsumer } from "../contexts/EmailContext";
+import React, { useContext } from "react";
+import { EmailContext } from "../contexts/EmailContext";
 import styled from "styled-components";
 
 const Viewer = styled.div`
@@ -22,15 +22,15 @@ const Viewer = styled.div`
     font-size: 15px;
   }
 `;
-const MessageViewer = () => (
-  <EmailConsumer>
-    {({ currentEmail, onSelectEmail }) => (
-      <Viewer className="MessageList">
-        <button onClick={() => onSelectEmail(null)} back />
-        <h2>{currentEmail.subject}</h2>
-        <h2>{currentEmail.body}</h2>
-      </Viewer>
-    )}
-  </EmailConsumer>
-);
+const MessageViewer = () => {
+  const { currentEmail, onSelectEmail } = useContext(EmailContext);
+  return (
+    <Viewer className="MessageList">
+      <button onClick={() => onSelectEmail(null)} back />
+      <h2>{currentEmail.subject}</h2>
+      <h2>{currentEmail.body}</h2>
+    </Viewer>
+  );
+};
+
 export default MessageViewer;

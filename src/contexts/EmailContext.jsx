@@ -57,6 +57,8 @@ class EmailProvider extends React.Component {
         //this.props.notify(`${emails.length} more emails arrived`);
       });
     }, 500);
+
+    this.refreshInterval = setInterval(this.refresh, 2000);
   }
 
   handleSelectEmail = email => {

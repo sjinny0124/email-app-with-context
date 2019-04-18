@@ -19,14 +19,14 @@ const GridHeader = styled.header`
   }
 `;
 
-const Header = ({ onLogout }) => {
+function Header() {
   const { emails } = useContext(EmailContext);
   return (
     <GridHeader className="Header">
       <h2>MailBox({emails.length})</h2>;
-      <UserMenu onLogout={onLogout} />
+      <UserMenu />
     </GridHeader>
   );
-};
+}
 
 export default Header;
